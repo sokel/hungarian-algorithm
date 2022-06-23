@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func validate(costs [][]int) error {
+func validate(costs [][]int64) error {
 	n := len(costs)
 
 	if n == 0 {

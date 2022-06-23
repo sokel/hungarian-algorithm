@@ -2,18 +2,18 @@ package hungarianAlgorithm
 
 type label struct {
 	n      int
-	costs  [][]int //costs
-	left   []int   // labels on the rows
-	right  []int   // labels on the columns
-	slack  []int   // min slack
-	slackI []int   // min slack index
+	costs  [][]int64 // costs
+	left   []int64   // labels on the rows
+	right  []int64   // labels on the columns
+	slack  []int64   // min slack
+	slackI []int64   // min slack index
 }
 
-func makeLabel(n int, costs [][]int) label {
-	left := make([]int, n)
-	right := make([]int, n)
-	slack := make([]int, n)
-	slackI := make([]int, n)
+func makeLabel(n int, costs [][]int64) label {
+	left := make([]int64, n)
+	right := make([]int64, n)
+	slack := make([]int64, n)
+	slackI := make([]int64, n)
 	return label{n, costs, left, right, slack, slackI}
 }
 
@@ -38,7 +38,7 @@ func (l *label) isTight(i int, j int) bool {
 // Assumes that each indices set is sorted and contains no duplicate.
 func (l *label) update(s []int, t []int) []edge {
 	// find the minimum slack
-	min := -1
+	min := int64(-1)
 	idx := 0
 	for j := 0; j < l.n; j++ {
 		if idx < len(t) && j == t[idx] {
@@ -70,26 +70,26 @@ func (l *label) update(s []int, t []int) []edge {
 		}
 		l.slack[j] -= min
 		if l.slack[j] == 0 {
-			edges = append(edges, edge{l.slackI[j], j})
+			edges = append(edges, edge{l.slackI[j], int64(j)})
 		}
 	}
 
 	return edges
 }
 
-func (l *label) initializeSlacks(i int) []edge {
+func (l *label) initializeSlacks(i int64) []edge {
 	edges := make([]edge, 0, l.n)
 	for j := 0; j < l.n; j++ {
 		l.slack[j] = l.costs[i][j] - l.left[i] - l.right[j]
 		l.slackI[j] = i
 		if l.slack[j] == 0 {
-			edges = append(edges, edge{i, j})
+			edges = append(edges, edge{i, int64(j)})
 		}
 	}
 	return edges
 }
 
-func (l *label) updateSlacks(i int) []edge {
+func (l *label) updateSlacks(i int64) []edge {
 	edges := make([]edge, 0, l.n)
 	for j := 0; j < l.n; j++ {
 		s := l.costs[i][j] - l.left[i] - l.right[j]
@@ -97,7 +97,7 @@ func (l *label) updateSlacks(i int) []edge {
 			l.slack[j] = s
 			l.slackI[j] = i
 			if l.slack[j] == 0 {
-				edges = append(edges, edge{i, j})
+				edges = append(edges, edge{i, int64(j)})
 			}
 		}
 	}

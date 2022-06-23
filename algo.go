@@ -1,11 +1,10 @@
 package hungarianAlgorithm
 
-// Returns the solution as an array `a` such that each row `i` is matched to
-// column `a[i]`
-func Solve(costs [][]int) ([]int, error) {
+// Solve returns the solution as an array `a` such that each row `i` is matched to column `a[i]`
+func Solve(costs [][]int64) ([]int64, error) {
 	// Validate the input
 	if err := validate(costs); err != nil {
-		return []int{}, err
+		return []int64{}, err
 	}
 
 	n := len(costs)
@@ -22,7 +21,7 @@ func Solve(costs [][]int) ([]int, error) {
 
 		// loop until the matching is augmented
 		for true {
-			var j int // new column index in the tree
+			var j int64 // new column index in the tree
 
 			// Extend the tree
 			if b, k := t.extend(); b {

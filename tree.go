@@ -1,7 +1,8 @@
 package hungarianAlgorithm
 
 type edge struct {
-	i, j int
+	i int64
+	j int64
 }
 
 type edgeSet struct {
@@ -24,15 +25,15 @@ func (s *edgeSet) add(e edge) {
 
 type tree struct {
 	n         int
-	root      int
-	leftPrec  []int
-	rightPrec []int
+	root      int64
+	leftPrec  []int64
+	rightPrec []int64
 	edges     edgeSet
 }
 
-func makeTree(n int, r int, e []edge) tree {
-	left := make([]int, n)
-	right := make([]int, n)
+func makeTree(n int, r int64, e []edge) tree {
+	left := make([]int64, n)
+	right := make([]int64, n)
 	for i := 0; i < n; i++ {
 		left[i] = -1
 		right[i] = -1
@@ -44,7 +45,7 @@ func makeTree(n int, r int, e []edge) tree {
 // Returns a couple of values:
 // - a boolean: whether the extension has been successful
 // - the index of the new element in the tree (when successful)
-func (t *tree) extend() (bool, int) {
+func (t *tree) extend() (bool, int64) {
 	b, e := t.edges.pop()
 	if b {
 		t.rightPrec[e.j] = e.i
@@ -74,13 +75,13 @@ func (t *tree) indices() ([]int, []int) {
 }
 
 // Add the edge (i, j) to the tree
-func (t *tree) addEdge(i int, j int) {
+func (t *tree) addEdge(i int64, j int64) {
 	t.leftPrec[i] = j
 }
 
 // Return the path to the root starting from the given vertex.
-func (t *tree) pathToRoot(end int) []int {
-	path := make([]int, 0, 2*t.n)
+func (t *tree) pathToRoot(end int64) []int64 {
+	path := make([]int64, 0, 2*t.n)
 
 	j := end
 	i := t.rightPrec[j]
